@@ -8,8 +8,6 @@
 import pandas as pd
 import numpy as np
 import re
-import matplotlib.pyplot as plt
-import seaborn as sns
 # NLP
 from nltk.corpus import stopwords
 from sklearn.naive_bayes import MultinomialNB
@@ -113,13 +111,13 @@ print(data.head())
 
 
 # Checking the distribution of engagment 
-fig, ax = plt.subplots(1,2, figsize=(12,5))
-data['engagement'].plot(kind='hist', ax=ax[0])
-ax[0].set_xlabel("Engagement")
+# fig, ax = plt.subplots(1,2, figsize=(12,5))
+# data['engagement'].plot(kind='hist', ax=ax[0])
+# ax[0].set_xlabel("Engagement")
 
-data['word_count'].plot(kind='hist', ax=ax[1])
-ax[1].set_xlabel("Word Count")
-plt.show()
+# data['word_count'].plot(kind='hist', ax=ax[1])
+# ax[1].set_xlabel("Word Count")
+# plt.show()
 
 
 # The distribution tells us that, most of the tweets received no engagement from the users. So, we will limit our analysis only for engagement values greater than 0. 
@@ -152,8 +150,8 @@ data.head()
 # In[11]:
 
 
-sns.countplot(x='engagement_bucket', data=data)
-plt.show()
+# sns.countplot(x='engagement_bucket', data=data)
+# plt.show()
 
 
 # In[12]:
@@ -176,10 +174,10 @@ data.head()
 
 # Which hour of the day, the posts are getting higher average engagement?
 hour = data.groupby('hour')['engagement'].mean()
-hour.plot(figsize=(12,5))
-plt.xlabel("Hour of Day")
-plt.ylabel("Engagement")
-plt.show()
+# hour.plot(figsize=(12,5))
+# plt.xlabel("Hour of Day")
+# plt.ylabel("Engagement")
+# plt.show()
 
 
 # In[15]:
@@ -187,10 +185,10 @@ plt.show()
 
 # Which day of the week, the posts are getting higher average engagement? (Monday=0, Sunday=6)
 weekday = data.groupby('week_day')['engagement'].mean()
-weekday.plot(figsize=(12,5))
-plt.xlabel("Day of the Week")
-plt.ylabel("Engagement")
-plt.show()
+# weekday.plot(figsize=(12,5))
+# plt.xlabel("Day of the Week")
+# plt.ylabel("Engagement")
+# plt.show()
 
 
 # In[16]:
@@ -198,10 +196,10 @@ plt.show()
 
 # Which day of the month, the posts are getting higher average engagement? (Monday=0, Sunday=6)
 dayofmonth = data.groupby('day')['engagement'].mean()
-dayofmonth.plot(figsize=(12,5))
-plt.xlabel("Day of the Month")
-plt.ylabel("Engagement")
-plt.show()
+# dayofmonth.plot(figsize=(12,5))
+# plt.xlabel("Day of the Month")
+# plt.ylabel("Engagement")
+# plt.show()
 
 
 # In[17]:
