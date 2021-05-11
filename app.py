@@ -131,7 +131,7 @@ def cs_body():
         """, unsafe_allow_html=True)
 
     # Types of activity you can perform
-    type = ["Engagement Prediction", "NLP Analyzer", "Sentiment Analyzer", "Topic Modelling"]
+    type = ["Sentiment Analyzer", "Engagement Prediction", "NLP Analyzer", "Topic Modelling"]
     deselect = list(set(type))
     activity = st.sidebar.selectbox("What do you want to perform?", deselect)
 
