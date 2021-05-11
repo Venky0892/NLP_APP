@@ -20,3 +20,4 @@ pyLDAvis==3.3.1
 openpyxl==3.0.7
 msgpack==0.5.6
 gensim==3.8.3
+pip==21.1.1
