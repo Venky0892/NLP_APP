@@ -291,7 +291,7 @@ def result(file, user_input):
     # Term Document Frequency
     corpus = [id2word.doc2bow(text) for text in texts]
     lda_model = model(corpus, id2word)
-    mallet_path = '/Users/shyam.muralidharan/Desktop/Engagement/mallet-2.0.8/bin/mallet'  # update this path
+    # mallet_path = '/Users/shyam.muralidharan/Desktop/Engagement/mallet-2.0.8/bin/mallet'  # update this path
     # ldamallet = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=5, id2word=id2word)
 
     df_topic_sents_keywords = format_topics_sentences(ldamodel= lda_model, corpus=corpus, texts=data_lemmatized)
