@@ -15,28 +15,11 @@ import streamlit as st
 from streamlit import components
 from flair.data import Sentence
 from flair.models import TextClassifier
-from nltk.corpus import words
-from nltk.metrics.distance import (
-    edit_distance,
-)
+
+
 from textblob import TextBlob
 import streamlit.components.v1 as components
-
-import nltk
-# nltk.download('stopwords')
 from Topic_modelling import *
-
-# nltk.download('movie_reviews')
-# nltk.download('punkt')
-# nlp = spacy.load('en_core_web_sm')
-
-# Wordcloud
-
-# Visualization
-# import seaborn as sns
-#
-# sns.set()
-
 st.set_page_config(layout='wide')
 
 

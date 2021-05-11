@@ -17,7 +17,6 @@ import spacy
 import pyLDAvis
 # from pyLDAvis import gensim
 import pyLDAvis.gensim_models
-import matplotlib.pyplot as plt
 # %matplotlib inline
 
 # Enable logging for gensim - optional
