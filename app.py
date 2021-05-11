@@ -33,9 +33,9 @@ from Topic_modelling import *
 # Wordcloud
 
 # Visualization
-import seaborn as sns
-
-sns.set()
+# import seaborn as sns
+#
+# sns.set()
 
 st.set_page_config(layout='wide')
 
