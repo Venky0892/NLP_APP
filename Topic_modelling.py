@@ -28,6 +28,7 @@ import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 nltk.download('words')

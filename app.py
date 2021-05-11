@@ -21,7 +21,8 @@ from textblob import TextBlob
 import streamlit.components.v1 as components
 from Topic_modelling import *
 st.set_page_config(layout='wide')
-
+import nltk
+nltk.download()
 
 # Custom Tokenizer
 def tokenize(text):
