@@ -137,8 +137,9 @@ def cs_body():
 
     if "Topic Modelling" in activity:
 
-        file = st.sidebar.file_uploader("Pick a file")
+        file = st.sidebar.file_uploader("Upload a file with Text column as content")
         user_input = st.sidebar.text_area("Fill your stopwords here with space!!" )
+
 
 
         if file is not None:

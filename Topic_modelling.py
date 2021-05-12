@@ -124,30 +124,29 @@ def bigram_mod(bigram):
     bigram_mod = gensim.models.phrases.Phraser(bigram)
     return bigram_mod
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def trigram_mod(trigram):
     trigram_mod = gensim.models.phrases.Phraser(trigram)
     return trigram_mod
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 # Define functions for stopwords, bigrams, trigrams and lemmatization
 def remove_stopwords(texts, user_input):
     stop_words.update(set(stoplist))
     stop_words.update(set(stop_list_2))
     stop_words.update(set(negation))
-    print("Stopwards-----------------------------------", user_input)
     stop_words.update(user_input)
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def make_bigrams(texts):
     return [bigram_mod[doc] for doc in texts]
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def make_trigrams(texts):
     return [trigram_mod[bigram_mod[doc]] for doc in texts]
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """https://spacy.io/api/annotation"""
     texts_out = []
@@ -158,7 +157,7 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
         texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
     return texts_out
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def format_topics_sentences(ldamodel=None, corpus=None, texts=None):
     # Init output
     sent_topics_df = pd.DataFrame()
@@ -184,7 +183,7 @@ def format_topics_sentences(ldamodel=None, corpus=None, texts=None):
     sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
     return (sent_topics_df)
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def to_dataframe(lda_model=None):
     # Top 3 Keywords for each Topic
     topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(formatted=False)
@@ -196,7 +195,7 @@ def to_dataframe(lda_model=None):
 
     return df_top3words
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def pyldavis(lda_model=None, corpus=None):
     vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word)
     return vis
@@ -204,7 +203,7 @@ def pyldavis(lda_model=None, corpus=None):
 
 # Building the Topic Model
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def model(corpus, id2word):
     lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                                 id2word=id2word,
@@ -231,7 +230,7 @@ def convertldaGenToldaMallet(mallet_model):
     model_gensim.sync_state()
     return model_gensim
 
-@st.cache()
+@st.cache(allow_output_mutation=True)
 def format_topics_sentences(ldamodel=None, corpus=None, texts=None):
     # Init output
     sent_topics_df = pd.DataFrame()
@@ -255,7 +254,7 @@ def format_topics_sentences(ldamodel=None, corpus=None, texts=None):
     contents = pd.Series(texts)
     sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
     return(sent_topics_df)
-@st.cache()
+@st.cache(allow_output_mutation=True)
 def representative_sentence(df_topic_sents_keywords= None):
     pd.options.display.max_colwidth = 100
 
@@ -273,8 +272,19 @@ def representative_sentence(df_topic_sents_keywords= None):
     # Format
     sent_topics_sorteddf_mallet.columns = ['Topic_Num', "Topic_Perc_Contrib", "Keywords", "Representative Text"]
     return sent_topics_sorteddf_mallet
+@st.cache(allow_output_mutation=True)
+def relevency(topic_data , lambd = None):
+    all_topics = {}
+    num_terms = 6  # Adjust number of words to represent each topic
+    lambd = lambd  # Adjust this accordingly based on tuning above
+    for i in range(1, 6):  # Adjust this to reflect number of topics chosen for final LDA model
+        topic = topic_data.topic_info[topic_data.topic_info.Category == 'Topic' + str(i)].copy()
+        topic['relevance'] = topic['loglift'] * (1 - lambd) + topic['logprob'] * lambd
+        all_topics['Topic ' + str(i)] = topic.sort_values(by='relevance', ascending=False).Term[:num_terms].values
+    final_data = pd.DataFrame(all_topics).T
+    return final_data
 
-@st.cache()
+@st.cache(suppress_st_warning= True)
 def result(file, user_input):
     data = preprocessing_text_column(file)
     words = data_words(data)
@@ -305,7 +315,7 @@ def result(file, user_input):
     df_dominant_topic = df_topic_sents_keywords.reset_index()
     df_dominant_topic.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
     sent_topics_sorteddf_mallet = representative_sentence(df_topic_sents_keywords)
-    topics = to_dataframe(lda_model)
     vis = pyldavis(lda_model, corpus)
+    topic_final = relevency(lambd = 0.11, topic_data=vis)
     pyLDAvis.save_html(vis, 'LDA_Visualization.html')
-    return topics, vis, df_dominant_topic, sent_topics_sorteddf_mallet
+    return topic_final, vis, df_dominant_topic, sent_topics_sorteddf_mallet
