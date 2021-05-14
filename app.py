@@ -13,8 +13,8 @@ import pandas as pd
 import spacy
 import streamlit as st
 from streamlit import components
-# from flair.data import Sentence
-# from flair.models import TextClassifier
+from flair.data import Sentence
+from flair.models import TextClassifier
 
 
 from textblob import TextBlob
@@ -245,12 +245,12 @@ def cs_body():
         else:
 
             if st.button("Predict"):
-                pass
-                # classifier = TextClassifier.load('en-sentiment')
-                # sentence = Sentence(new_text)
-                # classifier.predict(sentence)
 
-                # st.success("Text Sentiment:: {}".format(sentence.labels))
+                classifier = TextClassifier.load('en-sentiment')
+                sentence = Sentence(new_text)
+                classifier.predict(sentence)
+
+                st.success("Text Sentiment:: {}".format(sentence.labels))
 
 if __name__ == '__main__':
     main()
