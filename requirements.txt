@@ -1,6 +1,6 @@
 streamlit==0.76.0
 pandas==1.2.4
-numpy==1.20.2
+numpy==1.16.5
 spacy==2.1.8
 scikit-learn==0.23.2
 pyLDAvis==3.3.1
