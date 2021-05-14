@@ -246,11 +246,13 @@ def cs_body():
 
             if st.button("Predict"):
 
-                classifier = TextClassifier.load('en-sentiment')
-                sentence = Sentence(new_text)
-                classifier.predict(sentence)
+                # classifier = TextClassifier.load('en-sentiment')
+                # sentence = Sentence(new_text)
+                Polarity = getPolarity(new_text)
+                Result = getAnalysis(Polarity)
+                # classifier.predict(sentence)
 
-                st.success("Text Sentiment:: {}".format(sentence.labels))
+                st.success("Text Sentiment:: {}".format(Result))
 
 if __name__ == '__main__':
     main()
