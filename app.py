@@ -13,8 +13,8 @@ import pandas as pd
 import spacy
 import streamlit as st
 from streamlit import components
-from flair.data import Sentence
-from flair.models import TextClassifier
+# from flair.data import Sentence
+# from flair.models import TextClassifier
 
 
 from textblob import TextBlob
