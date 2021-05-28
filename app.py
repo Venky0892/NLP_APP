@@ -13,8 +13,23 @@ import pandas as pd
 import spacy
 import streamlit as st
 from streamlit import components
+# from keras.models import Sequential
+# from keras.layers import Dense
 # from flair.data import Sentence
 # from flair.models import TextClassifier
+from pathlib import Path
+
+from neural import *
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras import backend as k
+from tensorflow.keras import models
+# import keras.backend.tensorflow_backend as K
+
+
+# from keras.models import model_from_json
+# from keras.models import Sequential
+# from keras.layers import Dense
+
 
 
 from textblob import TextBlob
@@ -131,9 +146,16 @@ def cs_body():
         """, unsafe_allow_html=True)
 
     # Types of activity you can perform
-    type = ["Sentiment Analyzer", "Engagement Prediction", "NLP Analyzer", "Topic Modelling"]
+    type = ["Sentiment Analyzer", "Engagement Prediction", "NLP Analyzer", "Topic Modelling", "Train_Engagement"]
     deselect = list(set(type))
     activity = st.sidebar.selectbox("What do you want to perform?", deselect)
+
+    if "Train_Engagement" in activity:
+        file = st.sidebar.file_uploader("Upload a file with Text column as content")
+        if st.button("Train the model"):
+            model = Neural_model(file,None, None, None, None)
+            model.result()
+            st.success("Your model has been trained, Now predict your engagement")
 
     if "Topic Modelling" in activity:
 
@@ -166,54 +188,65 @@ def cs_body():
         new_text = st.text_area("Enter Post Text", "Type here .....")
 
         file1 = open('vectorizer.pkl', 'rb')
-        file2 = open('Logisticreg.pkl', 'rb')
+        # file2 = open('Logisticreg.pkl', 'rb')
         vect = pickle.load(file1)
-        model = pickle.load(file2)
-        file1.close()
-        file2.close()
-        word_count = len([i for i in str(new_text).split()])
+        # model = pickle.load(file2)
+        # file1.close()
+        # file2.close()
+        #creating a nueral net
+        my_file = Path("model.json")
+        if my_file.is_file():
+            json_file = open('model.json', 'r')
+            loaded_model_json = json_file.read()
+            json_file.close()
+            loaded_model = model_from_json(loaded_model_json)
+            loaded_model.load_weights("model.h5")
+            word_count = len([i for i in str(new_text).split()])
+            hour = st.sidebar.slider("Hour of the day", 0, 23, 16)
+            # 		day_of_week = st.sidebar.slider("Day of the week", 0, 6, 2)
+            days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            day_of_week = st.sidebar.selectbox("Day of the week", days)
+            # day_of_month = st.sidebar.slider("Day of the month", 1, 31, 1)
+            # tweet_type = st.sidebar.selectbox("Type of tweet", ("Organic", "Reply", "Retweet"))
 
-        hour = st.sidebar.slider("Hour of the day", 0, 23, 16)
-        # 		day_of_week = st.sidebar.slider("Day of the week", 0, 6, 2)
-        days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        day_of_week = st.sidebar.selectbox("Day of the week", days)
-        # day_of_month = st.sidebar.slider("Day of the month", 1, 31, 1)
-        # tweet_type = st.sidebar.selectbox("Type of tweet", ("Organic", "Reply", "Retweet"))
-
-        if day_of_week == 'Monday':
-            day_val = 0
-        elif day_of_week == 'Tuesday':
-            day_val = 1
-        elif day_of_week == 'Wednesday':
-            day_val = 2
-        elif day_of_week == 'Thursday':
-            day_val = 3
-        elif day_of_week == 'Friday':
-            day_val = 4
-        elif day_of_week == 'Saturday':
-            day_val = 5
-        else:
-            day_val = 6
-
-        test = pd.DataFrame({'word_count': word_count,
-                             'hour': hour,
-                             'week_day': day_val,
-                             }, index=[0])
-
-        if st.button("Predict"):
-            vect_text = vect.transform([new_text]).toarray()
-            final_test = np.hstack([test, vect_text])
-            prediction = model.predict(final_test)
-            st.success(prediction)
-            i = 0
-            if prediction[0][0] == 1:
-                final_class = 'Low Engagement Post'
-            elif prediction[0][1] == 1:
-                final_class = 'Medium Engagement Post'
+            if day_of_week == 'Monday':
+                day_val = 0
+            elif day_of_week == 'Tuesday':
+                day_val = 1
+            elif day_of_week == 'Wednesday':
+                day_val = 2
+            elif day_of_week == 'Thursday':
+                day_val = 3
+            elif day_of_week == 'Friday':
+                day_val = 4
+            elif day_of_week == 'Saturday':
+                day_val = 5
             else:
-                final_class = 'High Engagement Post'
+                day_val = 6
 
-            st.success("Text Categorized as:: {}".format(final_class))
+            test = pd.DataFrame({'word_count': word_count,
+                                 'hour': hour,
+                                 'week_day': day_val,
+                                 }, index=[0])
+
+            if st.button("Predict"):
+                vect_text = vect.transform([new_text]).toarray()
+                final_test = np.hstack([test, vect_text])
+                # model = loaded_model()
+                # prediction = loaded_model.predict_classes(final_test)
+                prediction_1 = np.argmax(loaded_model.predict(final_test), axis=-1)
+                # st.success(prediction)
+                i = 0
+                if prediction_1[0] == 0:
+                    final_class = 'Low Engagement Post'
+                elif prediction_1[0] == 1:
+                    final_class = 'Medium Engagement Post'
+                else:
+                    final_class = 'High Engagement Post'
+
+                st.success("Text Categorized as:: {}".format(final_class))
+        else:
+            st.success("Train your data before you predict the engagement")
 
     if "Sentiment Analyzer" in activity:
         new_text = st.text_area("Enter Post Text", "Type here .....")

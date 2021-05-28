@@ -7,3 +7,6 @@ pyLDAvis==3.3.1
 gensim==3.8.3
 textblob==0.15.3
 xlrd==1.2.0
+tensorflow==1.15.0
+keras==2.4.3
+h5py==2.10.0

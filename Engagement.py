@@ -41,14 +41,6 @@ print(source.shape)
 print(source.head(5))
 
 
-# In[3]:
-
-
-# Checking the data types
-source.info()
-
-
-# In[4]:
 
 
 # Taking a copy of the source file
@@ -110,24 +102,7 @@ print(data.head())
 # In[7]:
 
 
-# Checking the distribution of engagment 
-# fig, ax = plt.subplots(1,2, figsize=(12,5))
-# data['engagement'].plot(kind='hist', ax=ax[0])
-# ax[0].set_xlabel("Engagement")
 
-# data['word_count'].plot(kind='hist', ax=ax[1])
-# ax[1].set_xlabel("Word Count")
-# plt.show()
-
-
-# The distribution tells us that, most of the tweets received no engagement from the users. So, we will limit our analysis only for engagement values greater than 0. 
-# 
-# The distribution of word count shows that, the average number of words in the tweets are around 15.
-
-# In[8]:
-
-
-# Now, Filter only for non zero engagement values
 data = data[data['engagement'] > 0]
 print(data.shape)
 data.head()
@@ -284,7 +259,6 @@ print(cv_score.mean())
 logreg.fit(X_train,y_train)
 pred = logreg.predict(X_valid)
 # pred2 = clf.predict(X_valid)
-print("Predict hererererererer", pred)
 
 
 # In[27]:
