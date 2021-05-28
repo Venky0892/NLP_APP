@@ -206,7 +206,7 @@ def cs_body():
                                 <style>
                                 body {
                                     color: #212F3D;
-                                    background-color: #FFD7B2;
+                                    background-color: #FFD7B2K;
                                 }
                                 </style>
                                     """, unsafe_allow_html=True)
@@ -323,3 +323,5 @@ def cs_body():
 
 if __name__ == '__main__':
     main()
+
+

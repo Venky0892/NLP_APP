@@ -12,7 +12,7 @@ from gensim.models import CoherenceModel
 # from app import read_csv
 # spacy for lemmatization
 import spacy
-
+import os
 # Plotting tools
 import pyLDAvis
 # from pyLDAvis import gensim
@@ -32,7 +32,8 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 nltk.download('words')
-
+os.system("python -m spacy download en")
+nlp = spacy.load('en', disable=['parser', 'ner'])
 negation = ["no", "nor", "not", "don", "don't", "aren", "aren't", "couldn", "couldn't", "didn", "didn't", "doesn",
             "doesn't",
             "hadn", "hadn't", "hasn", "hasn't", "haven", "haven't", "isn", "isn't", "mightn", "mightn't", "mustn",
@@ -150,8 +151,6 @@ def make_trigrams(texts):
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """https://spacy.io/api/annotation"""
     texts_out = []
-    nlp = spacy.load('en', disable=['parser', 'ner'])
-
     for sent in texts:
         doc = nlp(" ".join(sent))
         texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
