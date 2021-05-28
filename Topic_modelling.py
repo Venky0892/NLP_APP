@@ -32,8 +32,6 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 nltk.download('words')
-
-# os.system("python3 -m spacy download en")
 # nlp = spacy.load('en', disable=['parser', 'ner'])
 negation = ["no", "nor", "not", "don", "don't", "aren", "aren't", "couldn", "couldn't", "didn", "didn't", "doesn",
             "doesn't",
