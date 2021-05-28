@@ -155,7 +155,7 @@ def cs_body():
                 <style>
                 body {
                     color: #212F3D;
-                    background-color: #FF5733;
+                    background-color: #FA927C;
                 }
                 </style>
                     """, unsafe_allow_html=True)
