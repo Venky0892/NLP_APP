@@ -167,6 +167,15 @@ def cs_body():
 
     if "Topic Modelling" in activity:
 
+        st.markdown("""
+                        <style>
+                        body {
+                            color: #212F3D;
+                            background-color: #D2FAF9;
+                        }
+                        </style>
+                            """, unsafe_allow_html=True)
+
         file = st.sidebar.file_uploader("Upload a file with Text column as content")
         user_input = st.sidebar.text_area("Fill your stopwords here with space!!" )
 
@@ -193,6 +202,14 @@ def cs_body():
             st.success("Please upload the Csv or Xlsx file.")
 
     if "Engagement Prediction" in activity:
+        st.markdown("""
+                                <style>
+                                body {
+                                    color: #212F3D;
+                                    background-color: #F4DCFD;
+                                }
+                                </style>
+                                    """, unsafe_allow_html=True)
         new_text = st.text_area("Enter Post Text", "Type here .....")
 
         file1 = open('vectorizer.pkl', 'rb')
@@ -257,6 +274,15 @@ def cs_body():
             st.success("Train your data before you predict the engagement")
 
     if "Sentiment Analyzer" in activity:
+        st.markdown("""
+                                <style>
+                                body {
+                                    color: #212F3D;
+                                    background-color: #FDDCEA;
+                                }
+                                </style>
+                                    """, unsafe_allow_html=True)
+
         new_text = st.text_area("Enter Post Text", "Type here .....")
         st.info("Get Your Sentiment")
         type_sentiments = ["Social Media Sentiments", "Movie and Products Sentiments"]
