@@ -127,7 +127,7 @@ def cs_sidebar():
     #     unsafe_allow_html=True,
     # )
     return None
-
+#FF5733
 # @st.cache(suppress_st_warning=True)
 def cs_body():
     st.markdown("""
@@ -138,8 +138,8 @@ def cs_body():
         }
         </style>
             """, unsafe_allow_html=True)
-    st.title("Post Engagement Prediction App")
-    st.subheader('by Venkatesh and Hariharan')
+    st.title("Social Media NLP App")
+    # st.subheader('by Venkatesh and Hariharan')
     st.markdown(
         """
        This application helps users to identify basic NLP related tasks.
@@ -151,6 +151,14 @@ def cs_body():
     activity = st.sidebar.selectbox("What do you want to perform?", deselect)
 
     if "Train_Engagement" in activity:
+        st.markdown("""
+                <style>
+                body {
+                    color: #212F3D;
+                    background-color: #FF5733;
+                }
+                </style>
+                    """, unsafe_allow_html=True)
         file = st.sidebar.file_uploader("Upload a file with Text column as content")
         if st.button("Train the model"):
             model = Neural_model(file,None, None, None, None)
