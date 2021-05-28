@@ -12,7 +12,7 @@ from gensim.models import CoherenceModel
 # from app import read_csv
 # spacy for lemmatization
 import spacy
-import os
+# import os
 # Plotting tools
 import pyLDAvis
 # from pyLDAvis import gensim
@@ -25,7 +25,7 @@ import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.ERROR)
 
 import warnings
-
+# spacy.load('en_core_web_sm')
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 import nltk
 nltk.download('stopwords')
@@ -150,12 +150,11 @@ def make_trigrams(texts):
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """https://spacy.io/api/annotation"""
     texts_out = []
-    nlp = spacy.load('en', disable=['parser', 'ner'])
+    nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
     for sent in texts:
         doc = nlp(" ".join(sent))
         texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
     return texts_out
-
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def format_topics_sentences(ldamodel=None, corpus=None, texts=None):
     # Init output
