@@ -130,14 +130,14 @@ def cs_sidebar():
 #FF5733
 # @st.cache(suppress_st_warning=True)
 def cs_body():
-    st.markdown("""
-        <style>
-        body {
-            color: #212F3D;
-            background-color: #E5E8E8;
-        }
-        </style>
-            """, unsafe_allow_html=True)
+    # st.markdown("""
+    #     <style>
+    #     body {
+    #         color: #212F3D;
+    #         background-color: #E5E8E8;
+    #     }
+    #     </style>
+    #         """, unsafe_allow_html=True)
     st.title("Social Media NLP App")
     # st.subheader('by Venkatesh and Hariharan')
     st.markdown(
