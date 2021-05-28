@@ -260,7 +260,7 @@ def cs_body():
                 # model = loaded_model()
                 # prediction = loaded_model.predict_classes(final_test)
                 prediction_1 = np.argmax(loaded_model.predict(final_test), axis=-1)
-                # st.success(prediction)
+                st.success(prediction_1)
                 i = 0
                 if prediction_1[0] == 0:
                     final_class = 'Low Engagement Post'
