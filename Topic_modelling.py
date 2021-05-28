@@ -17,6 +17,7 @@ import spacy
 import pyLDAvis
 # from pyLDAvis import gensim
 import pyLDAvis.gensim_models
+import en_core_web_sm
 # %matplotlib inline
 
 # Enable logging for gensim - optional
@@ -150,7 +151,8 @@ def make_trigrams(texts):
 def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
     """https://spacy.io/api/annotation"""
     texts_out = []
-    nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
+    nlp = en_core_web_sm.load()
+    # nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
     for sent in texts:
         doc = nlp(" ".join(sent))
         texts_out.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
