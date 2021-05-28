@@ -12,3 +12,4 @@ keras==2.4.3
 h5py==2.10.0
 dill==0.2.9
 imblearn==0.0
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
