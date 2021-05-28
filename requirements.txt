@@ -11,3 +11,4 @@ tensorflow==1.15.0
 keras==2.4.3
 h5py==2.10.0
 dill==0.2.9
+imblearn==0.0
