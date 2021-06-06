@@ -21,6 +21,7 @@ from pathlib import Path
 
 from neural import *
 from tensorflow.keras.models import model_from_json
+# from utils import read_data
 from tensorflow.keras import backend as k
 from tensorflow.keras import models
 # import keras.backend.tensorflow_backend as K
@@ -155,7 +156,7 @@ def cs_body():
                 <style>
                 body {
                     color: #212F3D;
-                    background-color: #FA927C;
+                    background-color: #F4F6F7;
                 }
                 </style>
                     """, unsafe_allow_html=True)
