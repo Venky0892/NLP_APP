@@ -172,10 +172,10 @@ def cs_body():
 
             start_execution = st.button("Train the model")
             if start_execution:
-                gif_runner = st.image("Bars-1s-201px.gif")
+                # gif_runner = st.image("Bars-1s-201px.gif")
                 model = Neural_model(file, date_column, engagement_column, word_count, text_column)
                 model.result()
-                gif_runner.empty()
+                # gif_runner.empty()
                 st.success("Your model has been trained, Now predict your engagement")
 
     if "Topic Modelling" in activity:
