@@ -156,7 +156,7 @@ def cs_body():
                 <style>
                 body {
                     color: #212F3D;
-                    background-color: #F4F6F7;
+                    background-color: #FFD7B2K;
                 }
                 </style>
                     """, unsafe_allow_html=True)
@@ -184,7 +184,7 @@ def cs_body():
                         <style>
                         body {
                             color: #212F3D;
-                            background-color: #D2FAF9;
+                            background-color: #FFD7B2K;
                         }
                         </style>
                             """, unsafe_allow_html=True)
@@ -292,7 +292,7 @@ def cs_body():
                                 <style>
                                 body {
                                     color: #212F3D;
-                                    background-color: #FDDCEA;
+                                    background-color: #FFD7B2K;
                                 }
                                 </style>
                                     """, unsafe_allow_html=True)
