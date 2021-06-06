@@ -167,7 +167,7 @@ def cs_body():
         """
        This application helps users to identify basic NLP related tasks.
         """, unsafe_allow_html=True)
-    set_png_as_page_bg('slide_1.png')
+    set_png_as_page_bg('kf_bhnlp_052219.png')
 
     # Types of activity you can perform
     type = ["Sentiment Analyzer", "Engagement Prediction", "NLP Analyzer", "Topic Modelling", "Train_Engagement"]
