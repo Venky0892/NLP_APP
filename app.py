@@ -6,7 +6,7 @@ Created on Sun Aug 30 09:05:03 2020
 """
 
 import pickle
-
+import base64
 import time
 import numpy as np
 import pandas as pd
@@ -128,6 +128,28 @@ def cs_sidebar():
     #     unsafe_allow_html=True,
     # )
     return None
+
+
+@st.cache(allow_output_mutation=True)
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+
+def set_png_as_page_bg(png_file):
+    bin_str = get_base64_of_bin_file(png_file)
+    page_bg_img = '''
+    <style>
+    body {
+    background-image: url("data:image/png;base64,%s");
+    background-size: cover;
+    }
+    </style>
+    ''' % bin_str
+
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+    return
 #FF5733
 # @st.cache(suppress_st_warning=True)
 def cs_body():
@@ -145,6 +167,7 @@ def cs_body():
         """
        This application helps users to identify basic NLP related tasks.
         """, unsafe_allow_html=True)
+    set_png_as_page_bg('kf_bhnlp_052219.png')
 
     # Types of activity you can perform
     type = ["Sentiment Analyzer", "Engagement Prediction", "NLP Analyzer", "Topic Modelling", "Train_Engagement"]
