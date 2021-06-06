@@ -170,8 +170,8 @@ def cs_body():
             word_count = st.sidebar.selectbox('select word_count column:', df.columns)
             engagement_column = st.sidebar.selectbox('select engagement column:', df.columns)
 
-            start_execution = st.button("Train the model")
-            if start_execution:
+            # start_execution = st.button("Train the model")
+            if st.button("Train the model"):
                 # gif_runner = st.image("Bars-1s-201px.gif")
                 model = Neural_model(file, date_column, engagement_column, word_count, text_column)
                 model.result()
