@@ -159,11 +159,23 @@ def cs_body():
                 }
                 </style>
                     """, unsafe_allow_html=True)
-        file = st.sidebar.file_uploader("Upload a file with Text column as content")
-        if st.button("Train the model"):
-            model = Neural_model(file,None, None, None, None)
-            model.result()
-            st.success("Your model has been trained, Now predict your engagement")
+        file = st.sidebar.file_uploader("Upload file")
+
+
+        if file is not None:
+            df = pd.read_excel(file)
+            date_column = st.sidebar.selectbox('select date column:', df.columns)
+            text_column = st.sidebar.selectbox('select text column:', df.columns)
+            word_count = st.sidebar.selectbox('select word_count column:', df.columns)
+            engagement_column = st.sidebar.selectbox('select engagement column:', df.columns)
+
+            start_execution = st.button("Train the model")
+            if start_execution:
+                gif_runner = st.image("Bars-1s-201px.gif")
+                model = Neural_model(file, date_column, engagement_column, word_count, text_column)
+                model.result()
+                gif_runner.empty()
+                st.success("Your model has been trained, Now predict your engagement")
 
     if "Topic Modelling" in activity:
 
@@ -176,14 +188,15 @@ def cs_body():
                         </style>
                             """, unsafe_allow_html=True)
 
-        file = st.sidebar.file_uploader("Upload a file with Text column as content")
+        file = st.sidebar.file_uploader("Upload a csv file")
         user_input = st.sidebar.text_area("Fill your stopwords here with space!!" )
 
 
 
         if file is not None:
-            df = read_csv(file)
-            df['content'] = df['content'].astype('str')
+            df = pd.read_excel(file)
+            cols = st.multiselect('select text column to form themes:', df.columns, default=[])
+            df['text'] = df[cols].astype('str')
             if st.button("Predict"):
                 user_input = user_input.split()
                 res, vis, dominant_topic, represent_sen = result(df, user_input)

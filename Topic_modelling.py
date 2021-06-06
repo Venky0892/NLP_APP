@@ -90,7 +90,7 @@ stop_words.update(set(negation))
 @st.cache(suppress_st_warning=True)
 def preprocessing_text_column(df):
     # Convert to list
-    data = df.content.values.tolist()
+    data = df.text.values.tolist()
     data = [x for x in data if str(x) != 'nan']
     data = [re.sub(r'\d', '', sent) for sent in data]  # removing digits
     data = [re.sub(r"(?:\@|https?\://)\S+", "", sent) for sent in data]  # removing mentions and urls

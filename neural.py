@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import re
+from datetime import datetime
+
 import xlrd
 import nltk
 import dill as pickle
@@ -95,15 +97,18 @@ class Neural_model:
         stop = stop.update(set(stoplist))
         return stop
 
-    @st.cache(suppress_st_warning=True, allow_output_mutation=True)
-    def read_data(self, data = None):
+    # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
+    def read_data(self):
         try:
-          data = pd.read_excel(data, parse_dates=['published'] )
-          data['published'] = pd.to_datetime(data['published'], errors='coerce')
-          data['engagement'] = data['engagement'].astype(int)
-          data['word_count'] = data['word_count'].astype(int)
-        # source['Tweet_type'] = source['Tweet_type'].astype('category')
-          source = data[['published', 'content', 'word_count', 'engagement']]
+            data = pd.read_excel(self.dataset, parse_dates=[self.date])
+            data[self.date] = pd.to_datetime(data[self.date], errors='coerce')
+            # data[self.date] = data[self.date].dt.strftime('%Y/%m/%d')
+            data[self.engagement] = data[self.engagement].astype(int)
+            data[self.wordcount] = data[self.wordcount].astype(int)
+            # source['Tweet_type'] = source['Tweet_type'].astype('category')
+            print(data[[self.date, self.textcolumn, self.wordcount, self.engagement]])
+            source = data[[self.date, self.textcolumn, self.wordcount, self.engagement]]
+
 
         except Exception as e:
             log('----------Error in Read data ----------:{}'.format(e), 'error')
@@ -175,30 +180,30 @@ class Neural_model:
             raise e
         return text
 
-    @st.cache(suppress_st_warning=True, allow_output_mutation=True)
+    # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     def data_processing(self, data):
 
         try:
-            data['content'] = data['content'].apply(self.text_preprocess)
+            data[self.textcolumn] = data[self.textcolumn].apply(self.text_preprocess)
             # data['content'] = self.text_preprocess(data['content'])
 
-            data = data[data['engagement'] > 0]
+            data = data[data[self.engagement] > 0]
 
-            data['engagement_bucket'] = pd.qcut(data['engagement'], q=[0,0.5, 0.75, 1], labels=['Low', 'Medium', 'High'])
+            data['engagement_bucket'] = pd.qcut(data[self.engagement], q=[0,0.5, 0.75, 1], labels=['Low', 'Medium', 'High'])
 
             # Creating time related features such as time, day, etc.
-            data['day'] = data['published'].dt.day
-            data['hour'] = data['published'].dt.hour
-            data['week_day'] = data['published'].dt.weekday
+            data['day'] = data[self.date].dt.day
+            data['hour'] = data[self.date].dt.hour
+            data['week_day'] = data[self.date].dt.weekday
 
-            hour = data.groupby('hour')['engagement'].mean()
-            weekday = data.groupby('week_day')['engagement'].mean()
-            dayofmonth = data.groupby('day')['engagement'].mean()
+            # hour = data.groupby('hour')[self.engagement].mean()
+            # weekday = data.groupby('week_day')[self.engagement].mean()
+            # dayofmonth = data.groupby('day')[self.engagement].mean()
 
             X = data[['word_count', 'hour', 'week_day']]
             X = pd.get_dummies(X, drop_first=True)
 
-            X['content'] = data['content']
+            X[self.textcolumn] = data[self.textcolumn]
             X.reset_index(drop=True,inplace=True)
 
             y= data['engagement_bucket']
@@ -212,9 +217,9 @@ class Neural_model:
     def TfidfVectorizer(self, X, y ):
         try:
             vec = TfidfVectorizer(strip_accents='unicode', ngram_range=(1,2), max_features=3000, smooth_idf=True, sublinear_tf=True)
-            train_vec = vec.fit_transform(X['content'])
+            train_vec = vec.fit_transform(X[self.textcolumn])
 
-            _train = np.hstack([X.drop('content', axis=1), train_vec.toarray()])
+            _train = np.hstack([X.drop(self.textcolumn, axis=1), train_vec.toarray()])
             y = LabelEncoder().fit_transform(y)
             scaler = Normalizer().fit(_train)
             _train = scaler.transform(_train)
@@ -326,7 +331,7 @@ class Neural_model:
     @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     def result(self):
         try:
-            data = self.read_data(self.dataset)
+            data = self.read_data()
             X,y = self.data_processing(data)
             _train, y = self.TfidfVectorizer(X,y)
             _train, y = self.balancing(_train, y)
