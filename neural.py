@@ -97,7 +97,7 @@ class Neural_model:
         stop = stop.update(set(stoplist))
         return stop
 
-    # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
+    @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     def read_data(self):
         try:
             data = pd.read_excel(self.dataset, parse_dates=[self.date])
@@ -180,7 +180,7 @@ class Neural_model:
             raise e
         return text
 
-    # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
+    @st.cache(suppress_st_warning=True, allow_output_mutation=True)
     def data_processing(self, data):
 
         try:
